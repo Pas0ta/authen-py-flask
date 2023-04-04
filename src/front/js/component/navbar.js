@@ -1,79 +1,52 @@
-import React, { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
-import "../../styles/nav.css";
-
 
 export const Navbar = () => {
 	const { store, actions } = useContext(Context);
-	const navigate = useNavigate();
+	const [loggedIn, setLoggedIn] = useState(false);
 
-	function handleLogout() {
-		actions.logout();
-		navigate("/");
-	}
+	// Verificar si el usuario está conectado cuando el componente se carga
+	useEffect(() => {
+		setLoggedIn(!!store.accessToken);
+	}, [store.accessToken]);
+
+	// Función para cerrar sesión
+	const handleLogout = async () => {
+		await actions.logout();
+		setLoggedIn(false);
+	};
+	console.log('store.accessToken:', store.accessToken);
+	console.log('store.refreshToken:', store.refreshToken);
+	console.log('store.accessToken ? "/profile" : "/signup":', store.accessToken ? "/profile" : "/signup");
+	console.log('store.accessToken ? "Profile" : "Sign up":', store.accessToken ? "Profile" : "Sign up");
+
 
 	return (
-		<nav className="styleNav p-3 text-bg-black">
+		<nav className="navbar navbar-light bg-light">
 			<div className="container">
-				<div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-center">
-					<ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-						<li>
-							<Link to="/" className="nav-link px-2 text-white">
-								Home
-							</Link>
-						</li>
-
-						<li>
-							{store.auth === true ? (
-								<Link to="/" className="nav-link px-2 text-white">
-									private
-								</Link>
-							) : null}
-						</li>
-						<li>
-							<Link to="/" className="nav-link px-2 text-white">
-								Contacto
-							</Link>
-						</li>
-					</ul>
-
-					{/* login registro */}
-					<div className="text-end">
-						{/* si store.auth esta logueado mostrar log out, sino alreves */}
-						{store.auth === true ? (
-							<Link to="/">
-								<button
-									type="button"
-									onClick={handleLogout}
-									className="btn btn-outline-light me-2"
-								>
-									Salir
-								</button>
-							</Link>
-						) : (
-							<Link to="/login">
-								<button type="button" className="btn btn-outline-light me-2">
-									Inicio
-								</button>
-							</Link>
-						)}
-
-						{/* si store.auth esta logueado mostrar Perfil sino registrarse */}
-						{store.auth === true ? (
-							<Link to="/profile">
-								<button type="button" className="btn btn-outline-light me-2">
-									Perfil
-								</button>
-							</Link>
-						) : (
-							<Link to="/register">
-								<button type="button" className="btn btn-outline-light me-2">
-									Registro
-								</button>
-							</Link>
-						)}
-					</div>
+				<Link to="/">
+					<span className="navbar-brand mb-0 h1"></span>
+				</Link>
+				<div className="ml-auto">
+					{loggedIn ? (
+						<Link className="mr-1" to="/profile">
+							<button className="btn btn-primary">Profile</button>
+						</Link>
+					) : (
+						<Link className="mr-1" to="/signup">
+							<button className="btn btn-primary">Sign up</button>
+						</Link>
+					)}
+					{loggedIn ? (
+						<button className="btn btn-primary" onClick={handleLogout}>
+							Log out
+						</button>
+					) : (
+						<Link to="/login">
+							<button className="btn btn-primary">Log in</button>
+						</Link>
+					)}
 				</div>
 			</div>
 		</nav>

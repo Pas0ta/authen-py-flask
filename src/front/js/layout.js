@@ -3,14 +3,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./pages/home";
-import { Single } from "./pages/single";
+import { Profile } from "./pages/profile.jsx";
+import { Login } from "./pages/login.jsx";
 import injectContext from "./store/appContext";
+
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { Login } from "./pages/login.jsx";
-import { Register } from "./pages/register.jsx";
-import Profile from "./pages/profile.jsx";
-
+import { Logout } from "./pages/logout.jsx";
+import { Signup } from "./pages/signup.jsx";
 
 //create your first component
 const Layout = () => {
@@ -25,15 +25,16 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
+                        <Route element={<Profile />} path="/demo" />
                         <Route element={<Login />} path="/login" />
-                        <Route element={<Register />} path="/register" />
+                        <Route element={<Signup />} path="/signup" />
                         <Route element={<Profile />} path="/profile" />
-                        <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1> Not found! </h1>} />
-                    </Routes>{" "}
+                        <Route element={<Logout />} path="/logout" />
+                        <Route element={<h1>Not found!</h1>} />
+                    </Routes>
                     <Footer />
-                </ScrollToTop>{" "}
-            </BrowserRouter>{" "}
+                </ScrollToTop>
+            </BrowserRouter>
         </div>
     );
 };

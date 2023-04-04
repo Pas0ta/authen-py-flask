@@ -21,6 +21,7 @@ typing-extensions = "*"
 flask-jwt-extended = "*"
 flask-mail = "*"
 requests = "*"
+flask-bcrypt = "*"
 
 [requires]
 python_version = "3.10"
